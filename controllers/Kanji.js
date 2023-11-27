@@ -11,4 +11,17 @@ const getAllKanjiByGrade = async(req,res) => {
     res.status(200).json(kanjis)
 }
 
-module.exports = { getAllKanjiByGrade }
+const getRandomKanji = async(req,res) => {
+    try{
+        const count = await Kanji.find().count()
+        const random = Math.floor(Math.random() * count)
+    
+        const kanji = await Kanji.findOne().skip(random)
+
+        res.status(200).json(kanji)
+    }catch(err){
+        return res.status(400).json({error: "Something went wrong, Couldn't fetch random kanji"})
+    }
+}
+
+module.exports = { getAllKanjiByGrade, getRandomKanji }
